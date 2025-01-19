@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
-import { StyleSheet, Text, TouchableHighlight, Image, TextInput, View, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, Image, TextInput, View, SafeAreaView, Alert } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 
 export default function App() {
@@ -17,8 +17,12 @@ export default function App() {
   return(
    <SafeAreaView styele={styles.container}>
     <SelectList
+      searchPlaceholder="Can't find your county? Search for it here!"
+      notFoundText='Sorry but that county does not exist in North Carolina!'
       data={countiesData}
       setSelected={setSelected}
+      save='value'
+      onSelect={() => {Alert.alert("Notice",`You selected ${selected}`)}}
     />
    </SafeAreaView>
   )
@@ -28,7 +32,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'rgb(255, 255, 255)',
+    backgroundColor: 'rgb(141, 128, 128)',
   },
 
 });
