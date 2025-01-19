@@ -1,20 +1,34 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, {useState} from 'react';
+import { StyleSheet, Text, TouchableHighlight, Image, TextInput, View, SafeAreaView } from 'react-native';
+import { SelectList } from 'react-native-dropdown-select-list';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Hello World!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+  //JavaScript
+  const [selected, setSelected] = React.useState("");
+
+  const countiesData = [
+    {key:'1', value:'Wake County'},
+    {key:'2', value:'Evil Wake County'},
+    {key:'23', value:'Durham County'},
+  ];
+
+  //HTML
+  return(
+   <SafeAreaView styele={styles.container}>
+    <SelectList
+      data={countiesData}
+      setSelected={setSelected}
+    />
+   </SafeAreaView>
+  )
 }
 
+// CSS
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: 'rgb(255, 255, 255)',
   },
+
 });
