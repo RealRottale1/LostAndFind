@@ -4,7 +4,6 @@ import { StyleSheet, Text, TouchableHighlight, Image, TextInput, View, SafeAreaV
 import { SelectList } from 'react-native-dropdown-select-list' // For dropdown list
 import AsyncStorage from '@react-native-async-storage/async-storage' // For data storage
 
-
 export default function App() {
   //JavaScript
   const [selected, setSelected] = React.useState("")
@@ -22,6 +21,18 @@ export default function App() {
       name: "",
       tBNP: "0", // Time Before Next Post
     };
+
+    static updateUserData(key, value) {
+      if (typeof(key) != "string" || typeof(value) != "string") {
+        console.warn("Unable to update user data because key/value is not a string!");
+        return;
+      }
+      if (!key in this.userData) {
+        console.warn("Unable to update user data because key is not a valid key entry!");
+        return;
+      }
+      this.userData[key] = value;
+    }
 
     static async saveUserData() {
       if (!this.dataLoaded) {
@@ -64,7 +75,9 @@ export default function App() {
       }
     }
   };
+  
   localDataManager.loadUserData();
+
 
   //HTML
   return(
@@ -80,42 +93,18 @@ export default function App() {
       }}
     />
     <TouchableHighlight onPress={() => {
-      Alert.alert("Notice", "Your lost item data has been sent!")
+      if (localDataManager.dataLoaded) {
+        Alert.alert("Notice", "Your lost item data has been sent!")
+        localDataManager.updateUserData("name", "John Rolph")
+        console.log("Name: "+localDataManager.userData.name);
+        localDataManager.saveUserData();
+      }
       }}>
       <Text>Submit Data</Text>
     </TouchableHighlight>
    </SafeAreaView>
   )
 }
-
-/*
-  const userData = {}
-  async function saveUserData() {
-    if (userData && userData[0]) {
-      try {
-        await AsyncStorage.setItem("userData", JSON.stringify(userData[0]))
-        console.log("Saved Data");
-      } catch (err) {
-        console.log(err)
-      }
-    }
-  }
-  async function loadUserData() {
-    try {
-      const stringData = await AsyncStorage.getItem("userData")
-      if (stringData) {
-        userData[0] = JSON.parse(stringData)
-        console.log(userData[0])
-      } else {
-        userData[0] = {name: "", county: "", timeBeforePost: 0}
-      }
-      console.log("Done!")
-    } catch (err) {
-      console.log(err)
-    }
-  }
-  loadUserData()
-*/
 
 // CSS
 const styles = StyleSheet.create({
